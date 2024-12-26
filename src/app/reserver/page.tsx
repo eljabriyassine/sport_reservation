@@ -39,10 +39,14 @@ const stadiums = [
 const sports = ["Tennis", "Football"];
 
 type Reservation = {
-  date: Date;
+  date: string;
   time: string;
   stadium: string;
   sport: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  telephone: string;
 };
 
 const fadeInOut = {
