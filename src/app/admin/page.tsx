@@ -9,6 +9,7 @@ import {
   Mail,
   Phone,
   ArrowLeft,
+  Trash2, // Add Trash icon for delete button
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -21,7 +22,7 @@ import {
 import Link from "next/link";
 
 type Reservation = {
-  id: number;
+  _id: string;
   date: string;
   time: string;
   stadium: string;
@@ -39,6 +40,9 @@ export default function AdminReservations() {
   >([]);
   const [sportFilter, setSportFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [reservationToDelete, setReservationToDelete] =
+    useState<Reservation | null>(null);
 
   useEffect(() => {
     fetch("api/get_reservations")
@@ -72,12 +76,51 @@ export default function AdminReservations() {
     setFilteredReservations(filteredData); // Set filtered list
   }, [sportFilter, dateFilter, reservations]);
 
+  const handleDelete = (reservation: Reservation) => {
+    console.log("Deleting reservation:", reservation._id);
+    setReservationToDelete(reservation);
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    if (reservationToDelete) {
+      try {
+        const response = await fetch(
+          `/api/delete_reservation/${reservationToDelete._id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        console.log("response", response);
+        if (response.ok) {
+          setReservations(
+            reservations.filter((r) => r._id !== reservationToDelete._id)
+          );
+          setFilteredReservations(
+            filteredReservations.filter(
+              (r) => r._id !== reservationToDelete._id
+            )
+          );
+        } else {
+          console.error("Error deleting reservation");
+        }
+      } catch (error) {
+        console.error("Error deleting reservation:", error);
+      }
+      setShowDeleteConfirmation(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false);
+    setReservationToDelete(null);
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* Filters */}
       <div className="flex justify-between items-center">
         <div>
-          {" "}
           <Link
             href="/"
             className="flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors"
@@ -134,16 +177,16 @@ export default function AdminReservations() {
             <TableCell>Customer</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Phone</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHeader>
         <TableBody>
           {/* Show filtered reservations */}
           {filteredReservations.length !== 0 && (
             <>
-              {" "}
               {filteredReservations.reverse().map((reservation) => (
                 <motion.tr
-                  key={reservation.id}
+                  key={reservation._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
@@ -191,12 +234,48 @@ export default function AdminReservations() {
                       {reservation.telephone}
                     </div>
                   </TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleDelete(reservation)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </TableCell>
                 </motion.tr>
               ))}
             </>
           )}
         </TableBody>
       </Table>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirmation && reservationToDelete && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-lg font-semibold text-gray-800">
+              Confirm Deletion
+            </h3>
+            <p className="text-sm text-gray-600 mt-4">
+              Are you sure you want to delete this reservation?
+            </p>
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

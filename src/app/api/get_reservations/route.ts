@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     // Fetch all reservations from the "reservations" collection
     const reservations = await db.collection("reservations").find({}).toArray();
 
-    return NextResponse.json(reservations); // Send the reservations as the response
+    return NextResponse.json(reservations); // Send 
   } catch (error) {
     console.error("Error fetching reservations:", error);
     return NextResponse.json(
