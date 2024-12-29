@@ -5,8 +5,12 @@ export async function GET(request: Request) {
   try {
     const client = await clientPromise;
     const db = client.db("sport"); // Specify the database name
-    // Fetch all reservations from the "reservations" collection
-    const reservations = await db.collection("reservations").find({}).toArray();
+    // Fetch all reservations from the "reservations" collection reversed by id
+    const reservations = await db
+      .collection("reservations")
+      .find({})
+      .sort({ _id: -1 })
+      .toArray();
 
     return NextResponse.json(reservations); // Send
   } catch (error) {

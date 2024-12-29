@@ -25,7 +25,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 //
-const sports = ["Tennis", "Football"];
 
 type Reservation = {
   date: string;
@@ -51,6 +50,15 @@ type Stadium = {
   sport: string;
 };
 
+function getUniqueSports(stadiums: Stadium[]): string[] {
+  return stadiums.reduce((uniqueSports: string[], stadium) => {
+    if (!uniqueSports.includes(stadium.sport)) {
+      uniqueSports.push(stadium.sport);
+    }
+    return uniqueSports;
+  }, []);
+}
+
 export default function ReservationSystem() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -64,6 +72,7 @@ export default function ReservationSystem() {
   const [telephone, setTelephone] = useState("");
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const [stadiums, setStadiums] = useState<Stadium[]>([]);
+  const [reservationId, setReservationId] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("api/get_reservations")
@@ -187,7 +196,8 @@ export default function ReservationSystem() {
           }
           return response.json();
         })
-        .then(() => {
+        .then((data) => {
+          setReservationId(data.id);
           setReservations((prevReservations) => [
             ...prevReservations,
             newReservation as Reservation,
@@ -201,7 +211,7 @@ export default function ReservationSystem() {
           setLastName("");
           setEmail("");
           setTelephone("");
-          setStep((prev) => prev + 1);
+          setStep(0);
         })
         .catch((error) => alert(`Reservation failed: ${error.message}`));
     }
@@ -240,7 +250,7 @@ export default function ReservationSystem() {
                       <SelectValue placeholder="Select Sport" />
                     </SelectTrigger>
                     <SelectContent>
-                      {sports.map((sport) => (
+                      {getUniqueSports(stadiums).map((sport) => (
                         <SelectItem key={sport} value={sport}>
                           {sport}
                         </SelectItem>
@@ -414,7 +424,7 @@ export default function ReservationSystem() {
             </Button>
           ) : null}
 
-          {step === 4 && (
+          {reservationId && (
             <Card className="w-96 bg-white shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-green-600 flex items-center justify-between">
@@ -425,10 +435,11 @@ export default function ReservationSystem() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  Your reservation has been confirmed. Thank you for choosing
+                <div className="text-gray-600">
+                  Your reservation has been confirmed with id
+                  <strong> {reservationId}</strong>. Thanfefe you for choosing
                   our service!
-                </p>
+                </div>
               </CardContent>
               <CardFooter>
                 <Button
