@@ -23,19 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Progress } from "@/components/ui/progress";
-import { SuccessPopup } from "@/components/ui/succes-popup";
 import Link from "next/link";
 //
-const timeSlots = ["9:00 AM", "10:00 AM"];
-
-const stadiums = [
-  { id: 1, name: "Terrain 1", sport: "Tennis" },
-  { id: 2, name: "Terrain 2", sport: "Tennis" },
-  { id: 3, name: "Terrain 3", sport: "Tennis" },
-  { id: 4, name: "Olympic Arena", sport: "Football" },
-  { id: 5, name: "City Sports Complex", sport: "Football" },
-];
-
 const sports = ["Tennis", "Football"];
 
 type Reservation = {
@@ -56,6 +45,12 @@ const fadeInOut = {
   transition: { duration: 0.3 },
 };
 
+type Stadium = {
+  id: number;
+  name: string;
+  sport: string;
+};
+
 export default function ReservationSystem() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -67,12 +62,24 @@ export default function ReservationSystem() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
+  const [stadiums, setStadiums] = useState<Stadium[]>([]);
 
   useEffect(() => {
     fetch("api/get_reservations")
       .then((response) => response.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error("Error fetching reservations:", error));
+  }, []);
+
+  useEffect(() => {
+    fetch("api/data")
+      .then((response) => response.json())
+      .then((data) => {
+        setTimeSlots(data.timeSlots);
+        setStadiums(data.stadiums);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   const isDateAvailable = (date: Date) => {
