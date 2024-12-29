@@ -1,15 +1,16 @@
-import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb"; // Your MongoDB client
+import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
 
-// DELETE handler to remove a reservation by its ID
-export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  console.log("Deleting reservation with ID:", id);
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
 
-  if (!id) {
+  if (!ObjectId.isValid(id)) {
     return NextResponse.json(
-      { error: "Reservation ID is required" },
+      { error: "Invalid reservation ID" },
       { status: 400 }
     );
   }
@@ -18,7 +19,6 @@ export async function DELETE(request: Request) {
     const client = await clientPromise;
     const db = client.db("sport");
 
-    // Find the reservation by its ID and delete it
     const result = await db
       .collection("reservations")
       .deleteOne({ _id: new ObjectId(id) });
