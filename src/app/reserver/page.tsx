@@ -146,7 +146,16 @@ export default function ReservationSystem() {
   };
 
   const handleReserve = () => {
-    if (selectedDate && selectedTime && selectedStadium && selectedSport) {
+    if (
+      selectedDate &&
+      selectedTime &&
+      selectedStadium &&
+      selectedSport &&
+      firstName &&
+      lastName &&
+      email &&
+      telephone
+    ) {
       const newReservation = {
         date: format(selectedDate, "yyyy-MM-dd"),
         time: selectedTime,
@@ -391,7 +400,8 @@ export default function ReservationSystem() {
           ) : step === 3 ? (
             <Button
               onClick={handleReserve}
-              className="bg-green-500 hover:bg-green-600"
+              disabled={!firstName || !lastName || !email || !telephone}
+              className="bg-green-500 hover:bg-green-600 "
             >
               Confirm Reservation
             </Button>

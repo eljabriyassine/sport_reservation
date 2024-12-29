@@ -30,7 +30,7 @@
     "src/app/api/message.js",
     "src/app/reserver/hi.jsx",
     "src/app/api/route.ts",
-    "src/app/api/get_reservations/route.js"
+    "src/app/api/get_reservations/route.ts"
   ],
   "exclude": ["node_modules"]
 }
