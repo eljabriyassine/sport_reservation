@@ -129,7 +129,7 @@ export default function AdminReservations() {
             Back
           </Link>
         </div>
-        <div className="flex space-x-4 mb-6 justify-end">
+        <div className="flex space-x-4  justify-end">
           <div className="flex items-center space-x-2">
             <label
               htmlFor="sportFilter"
@@ -167,87 +167,97 @@ export default function AdminReservations() {
         </div>
       </div>
 
-      <Table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden border-separate">
-        <TableHeader>
-          <TableRow>
-            <TableCell>Sport</TableCell>
-            <TableCell>Stadium</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Customer</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Phone</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {/* Show filtered reservations */}
-          {filteredReservations.length !== 0 && (
-            <>
-              {filteredReservations.reverse().map((reservation) => (
-                <motion.tr
-                  key={reservation._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="hover:bg-gray-100 transition-colors duration-300 border-b border-gray-300"
-                >
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.sport}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.stadium}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                      {new Date(reservation.date).toLocaleDateString()}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <Clock className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.time}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <Users className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.firstName} {reservation.lastName}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <Mail className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.email}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center text-gray-600">
-                      <Phone className="w-4 h-4 mr-2 text-indigo-500" />
-                      {reservation.telephone}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <button
-                      onClick={() => handleDelete(reservation)}
-                      className="text-red-600 hover:text-red-800"
+      {/* Reservations Table */}
+      {filteredReservations.length > 0 ? (
+        <>
+          {" "}
+          <Table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden border-separate">
+            <TableHeader>
+              <TableRow>
+                <TableCell>Sport</TableCell>
+                <TableCell>Stadium</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Time</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Phone</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {/* Show filtered reservations */}
+              {filteredReservations.length !== 0 && (
+                <>
+                  {filteredReservations.reverse().map((reservation) => (
+                    <motion.tr
+                      key={reservation._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="hover:bg-gray-100 transition-colors duration-300 border-b border-gray-300"
                     >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </TableCell>
-                </motion.tr>
-              ))}
-            </>
-          )}
-        </TableBody>
-      </Table>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <MapPin className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.sport}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <MapPin className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.stadium}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                          {new Date(reservation.date).toLocaleDateString()}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <Clock className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.time}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <Users className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.firstName} {reservation.lastName}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <Mail className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.email}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center text-gray-600">
+                          <Phone className="w-4 h-4 mr-2 text-indigo-500" />
+                          {reservation.telephone}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <button
+                          onClick={() => handleDelete(reservation)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </TableCell>
+                    </motion.tr>
+                  ))}
+                </>
+              )}
+            </TableBody>
+          </Table>
+        </>
+      ) : (
+        <div className="flex items-center justify-center h-64">
+          <p className="text-gray-600">No reservations found</p>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirmation && reservationToDelete && (

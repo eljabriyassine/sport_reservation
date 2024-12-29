@@ -14,7 +14,7 @@ const Progress = React.forwardRef<
     {...props}
   >
     <motion.div
-      className="h-full w-full flex-1 bg-gradient-to-r from-blue-500 to-puple-500 transition-all"
+      className="h-full w-full flex-1 bg-gradient-to-r from-blue-500 to-purple-500 transition-all"
       style={{ transformOrigin: "0%" }}
       initial={{ scaleX: 0 }}
       animate={{ scaleX: value ? value / 100 : 0 }}

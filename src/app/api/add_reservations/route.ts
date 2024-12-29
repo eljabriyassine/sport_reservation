@@ -48,7 +48,3 @@ export async function POST(request: Request) {
     { status: 201 }
   );
 }
-
-// Initial reservations data structure
-
-import { reservations, timeSlots, isDayFullyReserved } from "../data";
