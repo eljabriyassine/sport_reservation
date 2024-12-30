@@ -223,14 +223,6 @@ export default function ReservationSystem() {
             newReservation as Reservation,
           ]);
 
-          setSelectedDate(null);
-          setSelectedTime(null);
-          setSelectedStadium(null);
-          setSelectedSport(null);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setTelephone("");
           setStep(0);
         })
         .catch((error) => alert(`Reservation failed: ${error.message}`));
@@ -629,7 +621,7 @@ export default function ReservationSystem() {
                 Previous
               </Button>
             )}
-            {step < 3 ? (
+            {step > 0 && step < 3 ? (
               <Button
                 type="button"
                 onClick={handleNext}
@@ -667,7 +659,17 @@ export default function ReservationSystem() {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    onClick={() => setStep(1)}
+                    onClick={() => {
+                      setSelectedDate(null);
+                      setSelectedTime(null);
+                      setSelectedStadium(null);
+                      setSelectedSport(null);
+                      setFirstName("");
+                      setLastName("");
+                      setEmail("");
+                      setTelephone("");
+                      setStep(1);
+                    }}
                     className="w-full bg-green-500 hover:bg-green-600 text-white"
                   >
                     Close
