@@ -294,7 +294,7 @@ export default function AdminReservations() {
       {/* Delete confirmation modal */}
       {showDeleteConfirmation && reservationToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white-500 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs w-full">
+          <div className="bg-white-500 p-6 rounded-lg shadow-lg max-w-xs w-full">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">
               Confirm Deletion
             </h3>

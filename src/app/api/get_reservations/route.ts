@@ -16,7 +16,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Error fetching reservations:", error);
     return NextResponse.json(
-      { error: "An error occurred while fetching reservations" },
+      { error: "An error occurred while fetching reservations" + error },
       { status: 500 }
     );
   }

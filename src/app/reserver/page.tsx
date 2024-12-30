@@ -101,7 +101,10 @@ export default function ReservationSystem() {
   }, []);
 
   const isDateAvailable = (date: Date) => {
-    return date < new Date() || isDayFullyReserved(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+
+    return date < today && !isDayFullyReserved(date);
   };
 
   const isDayFullyReserved = (date: Date) => {
@@ -222,10 +225,9 @@ export default function ReservationSystem() {
             ...prevReservations,
             newReservation as Reservation,
           ]);
-
-          setStep(0);
         })
         .catch((error) => alert(`Reservation failed: ${error.message}`));
+      setStep(4);
     }
   };
 
@@ -370,7 +372,10 @@ export default function ReservationSystem() {
         </motion.div>
       </TabsContent>
 
-      <TabsContent value="reserver" className="flex gap-8">
+      <TabsContent
+        value="reserver"
+        className="flex flex-col sm:flex-row gap-8 items-center"
+      >
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -418,14 +423,16 @@ export default function ReservationSystem() {
                       >
                         <CheckCircle
                           className={`w-4 h-4 mr-2 ${
-                            step > index ? "text-green-500" : "text-gray-300"
+                            step > index + 1
+                              ? "text-green-500"
+                              : "text-gray-300"
                           }`}
                         />
                         <span
                           className={
-                            step > index
+                            step > index + 1
                               ? "font-medium text-indigo-600"
-                              : "text-gray-500"
+                              : "text-gray-600"
                           }
                         >
                           {stepName}
@@ -512,14 +519,14 @@ export default function ReservationSystem() {
                       Select Date and Time
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4 flex">
+                  <CardContent className="space-y-4 flex flex-col md:flex-row items-center gap-4">
                     <Calendar
                       mode="single"
                       selected={selectedDate ?? undefined}
                       onSelect={(day) => {
                         setSelectedDate(day ?? null);
                         setSelectedTime(null); // Reset time selection
-                      }} // Map undefined to null
+                      }} //
                       disabled={(date) => isDateAvailable(date)}
                       className="rounded-md border bg-white"
                     />
@@ -653,7 +660,7 @@ export default function ReservationSystem() {
                 <CardContent>
                   <div className="text-gray-600">
                     Your reservation has been confirmed with id
-                    <strong> {reservationId}</strong>. Thanfefe you for choosing
+                    <strong> {reservationId}</strong>. Thank you for choosing
                     our service!
                   </div>
                 </CardContent>
@@ -669,6 +676,7 @@ export default function ReservationSystem() {
                       setEmail("");
                       setTelephone("");
                       setStep(1);
+                      setReservationId(null);
                     }}
                     className="w-full bg-green-500 hover:bg-green-600 text-white"
                   >

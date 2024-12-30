@@ -17,15 +17,15 @@ const client = new MongoClient(uri, {
 
 let clientPromise: Promise<MongoClient>;
 
-if (process.env.NODE_ENV === "development") {
-  // Use a global variable in development to prevent multiple instances
-  if (!(global as any)._mongoClientPromise) {
-    (global as any)._mongoClientPromise = client.connect();
-  }
-  clientPromise = (global as any)._mongoClientPromise;
-} else {
-  // For production, use a single instance
-  clientPromise = client.connect();
-}
+// if (process.env.NODE_ENV === "development") {
+//   // Use a global variable in development to prevent multiple instances
+//   if (!(global as any)._mongoClientPromise) {
+//     (global as any)._mongoClientPromise = client.connect();
+//   }
+//   clientPromise = (global as any)._mongoClientPromise;
+// } else {
+// For production, use a single instance
+clientPromise = client.connect();
+// }
 
 export default clientPromise;
