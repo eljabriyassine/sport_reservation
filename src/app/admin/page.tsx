@@ -118,7 +118,6 @@ export default function AdminReservations() {
             method: "DELETE",
           }
         );
-        console.log("response", response);
         if (response.ok) {
           setReservations(
             reservations.filter((r) => r._id !== reservationToDelete._id)
