@@ -155,14 +155,22 @@ export default function ReservationSystem() {
   };
 
   const handleSearchReservation = () => {
-    const reservation = reservations.find(
-      (reservation) => reservation._id === searchId
-    );
-    if (reservation) {
-      setFoundReservation(reservation);
-    } else {
-      alert("Reservation not found!");
-    }
+    //fetch the reservation with the given ID
+    fetch(`api/get_one_reservation?id=${searchId}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Reservation not found");
+      })
+      .then((data) => {
+        setFoundReservation(data);
+        setIsReservationDeleted(false);
+      })
+      .catch((error) => {
+        alert(`Error: ${error.message}`);
+        setFoundReservation(null);
+      });
   };
 
   const handlePrevious = () => {
@@ -288,30 +296,31 @@ export default function ReservationSystem() {
               <h2 className="text-xl font-semibold mb-4 text-indigo-600">
                 Reservation Details
               </h2>
-              <div className="space-y-2">
-                <p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
                   <strong>Name:</strong> {foundReservation.firstName}{" "}
                   {foundReservation.lastName}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Email:</strong> {foundReservation.email}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Telephone:</strong> {foundReservation.telephone}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Stadium:</strong> {foundReservation.stadium}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Sport:</strong> {foundReservation.sport}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Date:</strong> {foundReservation.date}
-                </p>
-                <p>
+                </div>
+                <div>
                   <strong>Time:</strong> {foundReservation.time}
-                </p>
+                </div>
               </div>
+
               {/* Action Buttons */}
               <div className="flex justify-between mt-6">
                 <Button
@@ -321,6 +330,7 @@ export default function ReservationSystem() {
                   Delete Reservation
                 </Button>
                 <Button
+                  onClick={() => setFoundReservation(null)}
                   className={`${COLORS.buttonSecondary} w-full py-2 ml-4`}
                 >
                   Close
