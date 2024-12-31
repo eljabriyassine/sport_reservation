@@ -188,6 +188,7 @@ export default function AdminReservations() {
             <input
               id="dateFilter"
               type="date"
+              typeof="mutliple"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 bg-[#EFEFEF] rounded-md text-sm"

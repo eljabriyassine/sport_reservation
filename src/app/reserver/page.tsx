@@ -101,10 +101,7 @@ export default function ReservationSystem() {
   }, []);
 
   const isDateAvailable = (date: Date) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
-
-    return date < today && !isDayFullyReserved(date);
+    return date <= new Date() || isDayFullyReserved(date);
   };
 
   const isDayFullyReserved = (date: Date) => {
