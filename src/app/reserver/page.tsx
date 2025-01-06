@@ -84,7 +84,7 @@ export default function ReservationSystem() {
   const [isReservationDeleted, setIsReservationDeleted] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.API_URL}api/get_reservations`, {
+    fetch(`${process.env.API_URL}/api/get_reservations`, {
       cache: "no-cache",
     })
       .then((response) => response.json())
@@ -93,7 +93,7 @@ export default function ReservationSystem() {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.API_URL}api/data`, {
+    fetch(`${process.env.API_URL}/api/data`, {
       cache: "no-store",
     })
       .then((response) => response.json())
@@ -217,7 +217,7 @@ export default function ReservationSystem() {
         telephone: telephone,
       };
 
-      fetch(`${process.env.API_URL}api/add_reservations`, {
+      fetch(`${process.env.API_URL}/api/add_reservations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newReservation),
