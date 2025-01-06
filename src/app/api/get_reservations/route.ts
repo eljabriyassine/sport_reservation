@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { revalidatePath } from "next/cache"; // Import revalidatePath
 
 export async function GET(request: Request) {
   try {
     const client = await clientPromise;
     const db = client.db("sport"); // Specify the database name
+
     // Fetch all reservations from the "reservations" collection reversed by id
     const reservations = await db
       .collection("reservations")
@@ -20,6 +22,9 @@ export async function GET(request: Request) {
       "Cache-Control",
       "s-maxage=60, stale-while-revalidate"
     );
+
+    // Trigger revalidation on a specific path (e.g., the reservations page)
+    revalidatePath("/admin/reservations");
 
     return response; // Send the response with revalidation
   } catch (error) {
