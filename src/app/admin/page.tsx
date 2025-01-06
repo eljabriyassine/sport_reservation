@@ -50,7 +50,7 @@ export default function AdminReservations() {
     setLoading(true); // Start loading when fetching data
     fetch("api/get_reservations", {
       next: {
-        revalidate: 1,
+        revalidate: 60,
       },
     })
       .then((response) => response.json())

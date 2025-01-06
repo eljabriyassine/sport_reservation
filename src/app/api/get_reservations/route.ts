@@ -12,7 +12,16 @@ export async function GET(request: Request) {
       .sort({ _id: -1 })
       .toArray();
 
-    return NextResponse.json(reservations); // Send
+    // Return the reservations data with a revalidation interval of 60 seconds
+    const response = NextResponse.json(reservations);
+
+    // Add a revalidation header to indicate when to revalidate the data
+    response.headers.set(
+      "Cache-Control",
+      "s-maxage=60, stale-while-revalidate"
+    );
+
+    return response; // Send the response with revalidation
   } catch (error) {
     console.error("Error fetching reservations:", error);
     return NextResponse.json(
