@@ -48,7 +48,7 @@ export default function AdminReservations() {
 
   useEffect(() => {
     setLoading(true); // Start loading when fetching data
-    fetch("api/get_reservations")
+    fetch(`api/get_reservations?${new Date().getTime()}`)
       .then((response) => response.json())
       .then((data) => {
         setReservations(data);
@@ -60,7 +60,7 @@ export default function AdminReservations() {
 
   useEffect(() => {
     setLoading(true); // Start loading when fetching stadium data
-    fetch("api/data")
+    fetch(`api/data?${new Date().getTime()}`)
       .then((response) => response.json())
       .then((data) => {
         setStadiums(data.stadiums);
