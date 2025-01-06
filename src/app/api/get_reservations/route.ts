@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { revalidatePath } from "next/cache"; // Import revalidatePath
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: Request) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
     const client = await clientPromise;
     const db = client.db("sport"); // Specify the database name
@@ -18,10 +19,7 @@ export async function GET(request: Request) {
     const response = NextResponse.json(reservations);
 
     // Add a revalidation header to indicate when to revalidate the data
-    response.headers.set(
-      "Cache-Control",
-      "s-maxage=60, stale-while-revalidate"
-    );
+    response.headers.set("Cache-Control", "s-maxage=0, stale-while-revalidate");
 
     // Trigger revalidation on a specific path (e.g., the reservations page)
     revalidatePath("/admin/reservations");
