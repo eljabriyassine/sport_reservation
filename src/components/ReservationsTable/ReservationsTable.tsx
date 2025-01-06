@@ -84,7 +84,7 @@ const ReservationsTable: React.FC<Props> = ({
     if (reservationToDelete) {
       try {
         const response = await fetch(
-          `${process.env.apiUrl}
+          `${process.env.API_URL}
           /api/delete_reservation/${reservationToDelete._id}`,
           {
             method: "DELETE",
