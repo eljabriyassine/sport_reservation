@@ -48,7 +48,7 @@ export default function AdminReservations() {
 
   useEffect(() => {
     setLoading(true); // Start loading when fetching data
-    fetch(`api/get_reservations?${new Date().getTime()}`)
+    fetch(`/api/get_reservations?timestamp=${new Date().getTime()}`)
       .then((response) => response.json())
       .then((data) => {
         setReservations(data);

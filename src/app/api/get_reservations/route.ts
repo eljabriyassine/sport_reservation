@@ -11,9 +11,15 @@ export async function GET(request: Request) {
       .find({})
       .sort({ _id: -1 })
       .toArray();
-    console.log(reservations);
-    console.log("reservations");
-    return NextResponse.json(reservations); // Send
+
+    console.log("Fetched reservations from database", reservations);
+
+    const response = NextResponse.json(reservations);
+    response.headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate"
+    );
+    return response;
   } catch (error) {
     console.error("Error fetching reservations:", error);
     return NextResponse.json(
