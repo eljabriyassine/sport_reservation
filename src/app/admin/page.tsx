@@ -29,6 +29,8 @@ export default async function AdminReservationsPage() {
     return (
       <div>
         <p>Error loading reservations. Please try again later. </p>
+        <div>{process.env.API_URL}feufheufhue</div>
+        <p>wiat</p>
       </div>
     );
   }
