@@ -84,7 +84,9 @@ export default function ReservationSystem() {
   const [isReservationDeleted, setIsReservationDeleted] = useState(false);
 
   useEffect(() => {
-    fetch("api/get_reservations")
+    fetch("api/get_reservations", {
+      cache: "no-cache",
+    })
       .then((response) => response.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error("Error fetching reservations:", error));

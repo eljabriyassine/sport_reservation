@@ -48,11 +48,7 @@ export default function AdminReservations() {
 
   useEffect(() => {
     setLoading(true); // Start loading when fetching data
-    fetch("api/get_reservations", {
-      next: {
-        revalidate: 0,
-      },
-    })
+    fetch("api/get_reservations", { cache: "no-store" })
       .then((response) => response.json())
       .then((data) => {
         setReservations(data);
