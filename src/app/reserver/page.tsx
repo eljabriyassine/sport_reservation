@@ -84,14 +84,22 @@ export default function ReservationSystem() {
   const [isReservationDeleted, setIsReservationDeleted] = useState(false);
 
   useEffect(() => {
+<<<<<<< HEAD
     fetch(`api/get_reservations?${new Date().getTime()}`)
+=======
+    fetch(`${process.env.API_URL}/api/get_reservations`, {
+      cache: "no-cache",
+    })
+>>>>>>> 69eb5fe40cba71d5a051f46aabc6533059878167
       .then((response) => response.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error("Error fetching reservations:", error));
   }, []);
 
   useEffect(() => {
-    fetch("api/data")
+    fetch(`${process.env.API_URL}/api/data`, {
+      cache: "no-store",
+    })
       .then((response) => response.json())
       .then((data) => {
         setTimeSlots(data.timeSlots);
@@ -156,7 +164,9 @@ export default function ReservationSystem() {
 
   const handleSearchReservation = () => {
     //fetch the reservation with the given ID
-    fetch(`api/get_one_reservation?id=${searchId}`)
+    fetch(`${process.env.API_URL}/api/get_one_reservation?id=${searchId}`, {
+      cache: "no-store",
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -211,10 +221,11 @@ export default function ReservationSystem() {
         telephone: telephone,
       };
 
-      fetch("api/add_reservations", {
+      fetch(`${process.env.API_URL}/api/add_reservations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newReservation),
+        cache: "no-store",
       })
         .then((response) => {
           if (!response.ok) {
@@ -238,9 +249,13 @@ export default function ReservationSystem() {
 
   const handleDeleteReservation = () => {
     if (foundReservation) {
-      fetch(`api/delete_reservation/${foundReservation._id}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `${process.env.API_URL}/api/delete_reservation/${foundReservation._id}`,
+        {
+          method: "DELETE",
+          cache: "no-store",
+        }
+      )
         .then((response) => {
           if (response.ok) {
             setReservations((prev) =>

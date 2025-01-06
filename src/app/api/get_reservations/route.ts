@@ -11,7 +11,8 @@ export async function GET(request: Request) {
       .find({})
       .sort({ _id: -1 })
       .toArray();
-
+    console.log(reservations);
+    console.log("reservations");
     return NextResponse.json(reservations); // Send
   } catch (error) {
     console.error("Error fetching reservations:", error);
